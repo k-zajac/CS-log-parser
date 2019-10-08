@@ -5,22 +5,22 @@ import java.util.Objects;
 public class LogEntry {
     private final String id;
     private final String state;
-    private final long duration;
+    private final long timestamp;
     private final String type;
     private final String host;
 
-    public LogEntry(String id, String state, long duration) {
+    public LogEntry(String id, String state, long timestamp) {
         this.id = id;
         this.state = state;
-        this.duration = duration;
+        this.timestamp = timestamp;
         this.type = null;
         this.host = null;
     }
 
-    public LogEntry(String id, String state, long duration, String type, String host) {
+    public LogEntry(String id, String state, long timestamp, String type, String host) {
         this.id = id;
         this.state = state;
-        this.duration = duration;
+        this.timestamp = timestamp;
         this.type = type;
         this.host = host;
     }
@@ -35,8 +35,8 @@ public class LogEntry {
     }
 
 
-    public long getDuration() {
-        return duration;
+    public long getTimestamp() {
+        return timestamp;
     }
 
     public String getType() {
@@ -53,7 +53,7 @@ public class LogEntry {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         LogEntry logEntry = (LogEntry) o;
-        return duration == logEntry.duration &&
+        return timestamp == logEntry.timestamp &&
                 id.equals(logEntry.id) &&
                 state.equals(logEntry.state) &&
                 Objects.equals(type, logEntry.type) &&
@@ -62,6 +62,6 @@ public class LogEntry {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, state, duration, type, host);
+        return Objects.hash(id, state, timestamp, type, host);
     }
 }
