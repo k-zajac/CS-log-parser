@@ -59,7 +59,6 @@ public class Main {
                 numberOfThreads = 2*cores;
             }
 
-            parser =
         }else{
             LOGGER.info("Building application context for single thread");
         }

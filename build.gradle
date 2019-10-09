@@ -18,7 +18,8 @@ dependencies {
                     'org.apache.commons:commons-lang3:3.9',
                     'org.apache.logging.log4j:log4j-api:2.12.1',
                     'org.apache.logging.log4j:log4j-core:2.12.1',
-                    'com.beust:jcommander:1.78'
+                    'com.beust:jcommander:1.78',
+                    'com.jsoniter:jsoniter:0.9.19'
             ]
     )
 
