@@ -39,6 +39,11 @@ dependencies {
                     'com.jsoniter:jsoniter:0.9.19'
             ]
     )
+    runtime(
+            [
+                    'com.fasterxml.jackson.core:jackson-databind:2.9.0'
+            ]
+    )
 
     testCompile(
             [

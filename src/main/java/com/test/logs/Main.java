@@ -2,7 +2,6 @@ package com.test.logs;
 
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
-import com.test.logs.json.AbstractJSONParser;
 import com.test.logs.json.JSONParser;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -17,24 +16,36 @@ public class Main {
     @Parameter(names={"--working-director", "-wd"}, required = true)
     private String workingDirectory;
 
-    @Parameter(names={"--concurrent", "-c"})
+    @Parameter(names={"--concurrent", "-c"}, description = "Use concurrent solution")
     private boolean isConcurrent = false;
 
-    @Parameter(names={"--threads", "-t"})
+    @Parameter(names={"--threads", "-t"}, description = "Number of threads to be used. Works only with -c, --concurrent")
     private int numberOfThreads = 1;
 
     @Parameter(names = {"--help", "-h"}, help = true)
     private boolean help;
 
-    @Parameter(names = {"--input-file", "-i"})
+    @Parameter(names = {"--input-file", "-i"}, description = "File with logs to be processed")
     private String fileName = "logfile.txt";
+
+    @Parameter(names = {"--output-file", "-o"}, description = "Name of database file to store output")
+    private String dbName = "events.db";
 
     private JSONParser parser;
 
+    public boolean isHelp() {
+        return help;
+    }
+
     public static void main(String[] args){
         Main main = new Main();
-        JCommander.newBuilder().addObject(main).build().parse(args);
-        main.run();
+        JCommander jct = JCommander.newBuilder().addObject(main).build();
+        jct.parse(args);
+        if (main.isHelp()) {
+            jct.usage();
+        }else{
+            main.run();
+        }
     }
 
     private void run(){
