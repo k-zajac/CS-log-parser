@@ -2,7 +2,11 @@ package com.test.logs;
 
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
+import com.test.logs.json.AbstractJSONParser;
 import com.test.logs.json.JSONParser;
+import com.test.logs.service.ConcurrentEventService;
+import com.test.logs.service.EventService;
+import com.test.logs.service.SingleThreadEventService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -58,9 +62,11 @@ public class Main {
         }
         initializeContext();
         parser.process(logFile);
+        LOGGER.info(parser.getMetrics());
     }
 
     private void initializeContext(){
+        EventService service;
         if(isConcurrent){
             LOGGER.info("Building application context for multiple threads");
             if(numberOfThreads <= 1){
@@ -68,11 +74,15 @@ public class Main {
                 LOGGER.warn("Provided number of threads {%d} is not valid for concurrent solution. "
                         +"Found {%d} cores, setting {%d} threads.", numberOfThreads, cores, 2*cores);
                 numberOfThreads = 2*cores;
-            }
 
+            }
+            service = new ConcurrentEventService();
         }else{
             LOGGER.info("Building application context for single thread");
+            service = new SingleThreadEventService();
+            numberOfThreads = 1;
         }
+        parser = new AbstractJSONParser(service, numberOfThreads);
     }
 
     private int getNumberOfCores(){

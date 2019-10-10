@@ -3,11 +3,15 @@ package com.test.logs.json;
 import java.util.Objects;
 
 public class LogEntry {
-    private final String id;
-    private final String state;
-    private final long timestamp;
-    private final String type;
-    private final String host;
+    private String id;
+    private String state;
+    private long timestamp;
+    private String type;
+    private String host;
+
+    public LogEntry(){
+
+    }
 
     public LogEntry(String id, String state, long timestamp) {
         this.id = id;
