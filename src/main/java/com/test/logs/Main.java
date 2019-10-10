@@ -2,6 +2,7 @@ package com.test.logs;
 
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
+import com.test.logs.database.EventDAO;
 import com.test.logs.json.AbstractJSONParser;
 import com.test.logs.json.JSONParser;
 import com.test.logs.service.ConcurrentEventService;
@@ -67,6 +68,8 @@ public class Main {
 
     private void initializeContext(){
         EventService service;
+        EventDAO eventDAO = new com.test.logs.database.hsqldb.EventDAO();
+
         if(isConcurrent){
             LOGGER.info("Building application context for multiple threads");
             if(numberOfThreads <= 1){
@@ -76,12 +79,13 @@ public class Main {
                 numberOfThreads = 2*cores;
 
             }
-            service = new ConcurrentEventService();
+            service = new ConcurrentEventService(eventDAO, numberOfThreads);
         }else{
             LOGGER.info("Building application context for single thread");
-            service = new SingleThreadEventService();
+            service = new SingleThreadEventService(eventDAO);
             numberOfThreads = 1;
         }
+
         parser = new AbstractJSONParser(service, numberOfThreads);
     }
 

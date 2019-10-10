@@ -1,5 +1,6 @@
 package com.test.logs.service;
 
+import com.test.logs.database.EventDAO;
 import com.test.logs.json.LogEntry;
 import com.test.logs.model.Event;
 import com.test.logs.model.EventBuilder;
@@ -10,6 +11,11 @@ import java.util.Map;
 public class AbstractEventService implements EventService {
 
     protected Map<EventKey, LogEntry> eventMap;
+    protected EventDAO eventDAO;
+
+    public AbstractEventService(EventDAO eventDAO){
+        this.eventDAO = eventDAO;
+    }
 
     @Override
     public void processLogEntry(LogEntry entry) {
@@ -21,13 +27,10 @@ public class AbstractEventService implements EventService {
             Event event = key.getState() == EventKey.StateEnum.STARTED ? EventBuilder.createEvent(entry, complementaryLog) :
                     EventBuilder.createEvent(complementaryLog, entry);
             eventMap.remove(complementaryKey);
+            eventDAO.insert(event);
         } else {
             eventMap.put(key, entry);
         }
     }
 
-    @Override
-    public void findComplementaryEntry(EventKey key) {
-
-    }
 }

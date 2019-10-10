@@ -1,4 +1,7 @@
 package com.test.logs.database;
 
-public class EventDAO {
+import com.test.logs.model.Event;
+
+public interface EventDAO {
+    void insert(Event event);
 }

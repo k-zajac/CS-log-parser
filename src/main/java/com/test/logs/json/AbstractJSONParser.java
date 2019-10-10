@@ -57,7 +57,8 @@ public class AbstractJSONParser implements JSONParser{
             metrics.incrementTotal();
             try {
                 LogEntry entry = parse(line);
-                System.out.println("parsed entry id: "+entry.getId()+" timestamp: "+entry.getTimestamp());
+                LOGGER.debug("parsed entry id: "+entry.getId()+" timestamp: "+entry.getTimestamp());
+                eventService.processLogEntry(entry);
             }catch(JsonException e){
                 LOGGER.warn("failed to parse line "+line);
                 metrics.incrementErrors();
